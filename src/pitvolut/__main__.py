@@ -3,7 +3,7 @@ from pitvolut.core.pdf_processor import PitvolutPDFProcessor
 def main():
     """Main entry point for the application."""
     try:
-        processor = PitvolutPDFProcessor("/home/tymik/private/projects/PITvolut/test_data/revolut_statement.pdf")
+        processor = PitvolutPDFProcessor("test_data/revolut_statement.pdf")
         statement = processor.process()
         
         # Work with the structured data
