@@ -9,3 +9,9 @@ To start working with this project run:
 poetry install
 poetry shell
 ```
+
+To run the code:
+
+```bash
+python -m pitvolut
+```
