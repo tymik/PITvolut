@@ -1,4 +1,3 @@
-# src/pitvolut/__main__.py
 from pitvolut.core.pdf_processor import PitvolutPDFProcessor
 
 def main():
