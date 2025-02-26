@@ -1,11 +1,11 @@
 from typing import List, Optional
-from datetime import datetime
+from datetime import date
 from decimal import Decimal
 from pydantic import BaseModel
 
 class DividendTransaction(BaseModel):
     """Represents a dividend transaction from Revolut statement."""
-    date: datetime
+    date: date
     security_name: str
     symbol: str
     isin: str

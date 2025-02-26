@@ -125,10 +125,10 @@ class PitvolutPDFProcessor:
                 
                 # Convert date string to datetime
                 try:
-                    date = datetime.strptime(standardized_date, "%d %b %Y")
+                    date = datetime.strptime(standardized_date, "%d %b %Y").date()
                 except ValueError:
                     # Try alternative format if standard format fails
-                    date = datetime.strptime(date_str, "%d %B %Y")
+                    date = datetime.strptime(date_str, "%d %B %Y").date()
                 
                 transaction = DividendTransaction(
                     date=date,
