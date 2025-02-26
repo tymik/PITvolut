@@ -22,7 +22,7 @@ def main():
             
             # Print summary
             for transaction in statement.transactions:
-                print(f"{transaction.date}: {transaction.gross_amount_pln} ({transaction.security_name})")
+                print(f"{transaction.date}: {transaction.gross_amount_pln} ({transaction.security_name}), tax: {transaction.withholding_tax_pln}")
                 
     except Exception as e:
         print(f"Error processing PDF: {e}")
