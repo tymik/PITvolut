@@ -1,8 +1,9 @@
+import json
 from pathlib import Path
 import re
 from datetime import datetime
 from decimal import Decimal
-from typing import List, Tuple
+from typing import List, Tuple, Dict, Any
 import PyPDF2
 
 from .models import RevolutStatement, Transaction
@@ -141,3 +142,32 @@ class PitvolutPDFProcessor:
             footer_text=footer,
             transactions=transactions
         )
+    def get_raw_json(self) -> Dict[str, Any]:
+        """
+        Get raw JSON representation of the PDF content.
+        
+        Returns:
+            Dictionary with raw PDF content
+        """
+        raw_text = self.extract_raw_text()
+        header, table, footer = self.split_content(raw_text)
+        
+        # Create a raw representation
+        raw_data = {
+            "file_name": self.pdf_path.name,
+            "raw_text": raw_text,
+            "header_text": header,
+            "table_text": table,
+            "footer_text": footer,
+            "table_lines": table.split('\n') if table else []
+        }
+        
+        return raw_data
+        
+    def debug_print_json(self) -> None:
+        """
+        Print raw JSON representation of the PDF for debugging.
+        """
+        raw_data = self.get_raw_json()
+        # Use json.dumps for pretty printing
+        print(json.dumps(raw_data, indent=2, default=str))
