@@ -13,5 +13,6 @@ poetry shell
 To run the code:
 
 ```bash
-python -m pitvolut
+python -m pitvolut path/to/your.pdf
+python -m pitvolut path/to/your.pdf --debug
 ```
