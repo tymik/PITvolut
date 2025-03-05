@@ -1,4 +1,5 @@
 import argparse
+from decimal import Decimal
 from pitvolut.core.pdf_processor import PitvolutPDFProcessor
 
 
@@ -23,6 +24,11 @@ def main():
         else:
             # Normal processing
             statement = processor.process()
+
+            total_gross_amount_pln = Decimal("0.00")
+            total_withholding_tax_pln = Decimal("0.00")
+            total_tax_to_pay_pln = Decimal("0.00")
+
             print(f"Found {len(statement.transactions)} transactions")
 
             # Print summary
@@ -35,6 +41,26 @@ def main():
                 print(
                     f"{transaction.date}: {transaction.gross_amount_pln} PLN ({transaction.security_name}) | Type: {transaction.transaction_type} | Withholding tax: {transaction.withholding_tax_pln} PLN | {tax_info}"
                 )
+
+                total_gross_amount_pln += transaction.gross_amount_pln
+                total_withholding_tax_pln += transaction.withholding_tax_pln
+                total_tax_to_pay_pln += transaction.tax_to_pay_pln
+
+                # Store values for later use - this is not used at the moment
+                # TODO: think how to use this data
+                summary = {
+                    "total_gross_amount_pln": total_gross_amount_pln,
+                    "total_withholding_tax_pln": total_withholding_tax_pln,
+                    "total_tax_to_pay_pln": total_tax_to_pay_pln,
+                }
+
+            print("\n\n\n")
+            print("Summary of transactions:")
+            print(f"Total gross amount: {summary['total_gross_amount_pln']:.2f} PLN")
+            print(
+                f"Total withholding tax: {summary['total_withholding_tax_pln']:.2f} PLN"
+            )
+            print(f"Total tax to pay: {summary['total_tax_to_pay_pln']:.2f} PLN")
 
     except Exception as e:
         print(f"Error processing PDF: {e}")
