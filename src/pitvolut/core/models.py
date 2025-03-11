@@ -14,6 +14,7 @@ class DividendTransaction(BaseModel):
     country: str
     gross_amount_usd: Decimal
     gross_amount_pln: Decimal
+    gross_tax: Decimal = Decimal("0.00")
     exchange_rate: Decimal
     withholding_tax_usd: Decimal
     withholding_tax_pln: Decimal
@@ -36,8 +37,10 @@ class DividendTransaction(BaseModel):
 
     def calculate_tax(self):
         tax_rate = Decimal("0.19")
-        gross_tax = self.gross_amount_pln * tax_rate
-        self.tax_to_pay_pln = max(gross_tax - self.withholding_tax_pln, Decimal("0.00"))
+        self.gross_tax = self.gross_amount_pln * tax_rate
+        self.tax_to_pay_pln = max(
+            self.gross_tax - self.withholding_tax_pln, Decimal("0.00")
+        )
 
 
 class RevolutStatement(BaseModel):
