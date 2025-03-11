@@ -49,13 +49,13 @@ def main():
                 total_tax_to_pay_pln += transaction.tax_to_pay_pln
 
                 # Store values for later use - this is not used at the moment
-                # TODO: think how to use this data
-                summary = {
-                    "total_gross_amount_pln": total_gross_amount_pln,
-                    "total_withholding_tax_pln": total_withholding_tax_pln,
-                    "total_gross_tax": total_gross_tax,
-                    "total_tax_to_pay_pln": total_tax_to_pay_pln,
-                }
+            # TODO: think how to use this data
+            summary = {
+                "total_gross_amount_pln": total_gross_amount_pln,
+                "total_withholding_tax_pln": total_withholding_tax_pln,
+                "total_gross_tax": total_gross_tax,
+                "total_tax_to_pay_pln": total_tax_to_pay_pln,
+            }
 
             print("\n\n\n")
             print("Summary of transactions:")
