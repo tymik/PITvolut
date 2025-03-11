@@ -1,5 +1,7 @@
 import argparse
 from decimal import Decimal
+from tabulate import tabulate
+
 from pitvolut.core.pdf_processor import PitvolutPDFProcessor
 
 
@@ -25,6 +27,7 @@ def main():
             # Normal processing
             statement = processor.process()
 
+            tax_rate = Decimal("0.19")
             total_gross_amount_pln = Decimal("0.00")
             total_withholding_tax_pln = Decimal("0.00")
             total_gross_tax = Decimal("0.00")
@@ -48,10 +51,17 @@ def main():
                 total_gross_tax += transaction.gross_tax
                 total_tax_to_pay_pln += transaction.tax_to_pay_pln
 
+            # Calculate total tax based on total gross amount
+            total_calculated_tax_pln = total_gross_amount_pln * tax_rate
+            total_tax_to_pay_pln = max(
+                total_calculated_tax_pln - total_withholding_tax_pln, Decimal("0.00")
+            )
+
             summary = {
                 "total_gross_amount_pln": total_gross_amount_pln,
                 "total_withholding_tax_pln": total_withholding_tax_pln,
                 "total_gross_tax": total_gross_tax,
+                "total_calculated_tax_pln": total_calculated_tax_pln,
                 "total_tax_to_pay_pln": total_tax_to_pay_pln,
             }
 
@@ -62,7 +72,31 @@ def main():
                 f"Total withholding tax: {summary['total_withholding_tax_pln']:.2f} PLN"
             )
             print(f"Total gross tax: {summary['total_gross_tax']:.2f} PLN")
+            print(
+                f"Total calculated tax: {summary['total_calculated_tax_pln']:.2f} PLN"
+            )
             print(f"Total tax to pay: {summary['total_tax_to_pay_pln']:.2f} PLN")
+
+            # Create table
+            table_data = [
+                [
+                    "45. Zryczałtowany podatek obliczony od przychodów (dochodów),\n"
+                    "o których mowa w art. 30a ust. 1 pkt 1-5 ustawy,\n"
+                    "uzyskanych poza granicami Rzeczypospolitej Polskiej",
+                    f"{summary['total_calculated_tax_pln']:.2f} PLN",
+                ],
+                [
+                    "46. Podatek zapłacony za granicą, o którym mowa w art. 30a ust. 9 ustawy\n"
+                    "(przeliczony na złote).\n"
+                    "Kwota z poz. 46 nie może przekroczyć kwoty z poz. 45.",
+                    f"{summary['total_withholding_tax_pln']:.2f} PLN",
+                ],
+            ]
+
+            print("\n\nG. KWOTA DO ZAPŁATY")
+            print(
+                tabulate(table_data, headers=["Pole", "Wartość"], tablefmt="fancy_grid")
+            )
 
     except Exception as e:
         print(f"Error processing PDF: {e}")
