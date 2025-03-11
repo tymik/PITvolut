@@ -27,6 +27,7 @@ def main():
 
             total_gross_amount_pln = Decimal("0.00")
             total_withholding_tax_pln = Decimal("0.00")
+            total_gross_tax = Decimal("0.00")
             total_tax_to_pay_pln = Decimal("0.00")
 
             print(f"Found {len(statement.transactions)} transactions")
@@ -44,6 +45,7 @@ def main():
 
                 total_gross_amount_pln += transaction.gross_amount_pln
                 total_withholding_tax_pln += transaction.withholding_tax_pln
+                total_gross_tax += transaction.gross_tax
                 total_tax_to_pay_pln += transaction.tax_to_pay_pln
 
                 # Store values for later use - this is not used at the moment
@@ -51,6 +53,7 @@ def main():
                 summary = {
                     "total_gross_amount_pln": total_gross_amount_pln,
                     "total_withholding_tax_pln": total_withholding_tax_pln,
+                    "total_gross_tax": total_gross_tax,
                     "total_tax_to_pay_pln": total_tax_to_pay_pln,
                 }
 
@@ -60,6 +63,7 @@ def main():
             print(
                 f"Total withholding tax: {summary['total_withholding_tax_pln']:.2f} PLN"
             )
+            print(f"Total gross tax: {summary['total_gross_tax']:.2f} PLN")
             print(f"Total tax to pay: {summary['total_tax_to_pay_pln']:.2f} PLN")
 
     except Exception as e:
