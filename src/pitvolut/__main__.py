@@ -48,8 +48,6 @@ def main():
                 total_gross_tax += transaction.gross_tax
                 total_tax_to_pay_pln += transaction.tax_to_pay_pln
 
-                # Store values for later use - this is not used at the moment
-            # TODO: think how to use this data
             summary = {
                 "total_gross_amount_pln": total_gross_amount_pln,
                 "total_withholding_tax_pln": total_withholding_tax_pln,
